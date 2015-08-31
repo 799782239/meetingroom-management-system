@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head>
+<title>部门人员修改</title>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="scripts/jquery-1.11.0.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<style>
+input.layer {
+	background-image: url("img/right_button.png");
+	border: 0px;
+	width: 46px;
+	height: 41px;
+}
+
+input.layer2 {
+	background-image: url("img/left_button.png");
+	border: 0px;
+	width: 46px;
+	height: 41px;
+}
+
+#layer3 {
+	background-color: #808080;
+	width: 200px;
+	padding: 10px;
+	color: white;
+	margin-left: 50px;
+}
+
+div.title1 {
+	margin: 5%;
+	font-weight: bolder;
+}
+</style>
+</head>
+<body>
+	<div class="title1">
+		<h2>部门管理-人员修改</h2>
+	</div>
+
+	<form method="post" name="myform" style="margin-left: 50px">
+		<table border="0" width="100%">
+			<tr>
+				<td width="20%"></td>
+				<td width="20%" id="layer3">部门选择<select id="selDepartments"
+					onchange="setLeftSelect()"
+					style="background-color: #808080;color: white;width: 80px">
+				</select>
+				</td>
+				<td width="20%"></td>
+				<td width="20%" id="layer3">部门选择<select id="selDepartments1"
+					onchange="setRightSelect()"
+					style="background-color: #808080;color: white;width: 80px">
+				</select>
+				</td>
+			</tr>
+			<tr></tr>
+			<tr>
+				<td width="20%"></td>
+				<td width="20%"><select
+					style="WIDTH:100%;background-color: #c0c0c0;border: 0px" multiple
+					name="list1" size="12" id="leftSelect"
+					ondblclick="moveOption(document.myform.list1,document.myform.selDepartments, document.myform.list2, document.myform.selDepartments1)">
+				</select></td>
+				<td width="20%" align="center"><input type="button"
+					class="layer" value=""
+					onclick="moveOption(document.myform.list1,document.myform.selDepartments, document.myform.list2, document.myform.selDepartments1)"><br />
+					<br /> <input type="button" class="layer2" value=""
+					onclick="moveOption(document.myform.list2, document.myform.selDepartments1,document.myform.list1,document.myform.selDepartments)">
+				</td>
+				<td width="20%"><select
+					style="WIDTH:100%;background-color: #c0c0c0;border: 0px" multiple
+					name="list2" size="12" id="RightSelect"
+					ondblclick="moveOption(document.myform.list2, document.myform.selDepartments1,document.myform.list1,document.myform.selDepartments)">
+				</select></td>
+				<td width="20%"></td>
+			</tr>
+		</table>
+	</form>
+	<script type="text/javascript">
+		function moveOption(e1,s1,e2,s2) {
+			var department = "";
+			for (var i = 0; i < s2.options.length; i++) {
+				if (s2.options[i].selected) {
+					department = s2.options[i].text;
+				}
+			}
+			
+			try {
+				for (var i = 0; i < e1.options.length; i++) {
+					if (e1.options[i].selected) {
+						var e = e1.options[i];
+						e2.options.add(new Option(e.text, e.value));
+						e1.remove(i);
+						console.log(e.text);
+						console.log(department);
+						$.post("modify.action",{'workId' : e.text,'department' : department},function(result){
+							
+						});
+						i = i - 1;
+					}
+				}
+				document.myform.city.value = getvalue(document.myform.list2);
+			} catch (e) {
+			}
+		}
+		function getvalue(geto) {
+			var allvalue = "";
+			for (var i = 0; i < geto.options.length; i++) {
+				allvalue += geto.options[i].value + ",";
+			}
+			return allvalue;
+		}
+		function changepos(obj, index) {
+			if (index == -1) {
+				if (obj.selectedIndex > 0) {
+					obj.options(obj.selectedIndex).swapNode(
+							obj.options(obj.selectedIndex - 1))
+				}
+			} else if (index == 1) {
+				if (obj.selectedIndex < obj.options.length - 1) {
+					obj.options(obj.selectedIndex).swapNode(
+							obj.options(obj.selectedIndex + 1))
+				}
+			}
+		}
+		function setLeftDepartmentSelect() {
+			DepartmentSelect = document.getElementById("selDepartments");
+			$.post("modify!list", {}, function(result) {
+				var DepartmentArray = JSON.parse(result);
+				for (var i = 0; i < DepartmentArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = DepartmentArray[i].name;
+					DepartmentSelect.appendChild(option);
+				}
+				setLeftSelect();
+				setRightDepartmentSelect();
+			});
+		}
+
+		function setRightDepartmentSelect() {
+			DepartmentSelect = document.getElementById("selDepartments1");
+			$.post("modify!list", {}, function(result) {
+				var DepartmentArray = JSON.parse(result);
+				for (var i = 0; i < DepartmentArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = DepartmentArray[i].name;
+					DepartmentSelect.appendChild(option);
+				}
+				setRightSelect();
+			});
+		}
+
+		function setLeftSelect() {
+			var department = $("#selDepartments option:selected").text();
+			leftSelect = document.getElementById("leftSelect");
+			leftSelect.options.length = 0;
+			$.post("modify!userlist", {
+				'Department' : department
+			}, function(result) {
+				var leftSelectArray = JSON.parse(result);
+				for (var i = 0; i < leftSelectArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = leftSelectArray[i].name + ":"
+							+ leftSelectArray[i].workId;
+					leftSelect.appendChild(option);
+				}
+			});
+		}
+
+		function setRightSelect() {
+			var department = $("#selDepartments1 option:selected").text();
+			RightSelect = document.getElementById("RightSelect");
+			RightSelect.options.length = 0;
+			$.post("modify!userlist", {
+				'Department' : department
+			}, function(result) {
+				var RightSelectArray = JSON.parse(result);
+				for (var i = 0; i < RightSelectArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = RightSelectArray[i].name + ":"
+							+ RightSelectArray[i].workId;
+					RightSelect.appendChild(option);
+				}
+			});
+		}
+		window.onload = setLeftDepartmentSelect;
+	</script>
+</body>
+</html>

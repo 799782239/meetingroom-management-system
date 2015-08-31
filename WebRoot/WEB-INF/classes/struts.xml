@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<package name="user" namespace="/" extends="struts-default">
+		<action name="persondel" class="userAction"></action>
+		<action name="persondelete" class="userAction" method="persondelete"></action>
+	</package>
+	<package name="dologin" namespace="/" extends="struts-default">
+	<action name="login" class="com.meeting.action.LoginAction">
+		<result name="suc">NoticeOfMeeting.html</result>
+		<result name="fail">login.html</result>
+	</action>
+	<action name="reg" class="com.meeting.action.RegisterAction">
+		<result name="add">login.html</result>
+	</action>
+	</package>
+	<package name="Meeting" namespace="/" extends="struts-default">
+
+	<action name="addmeeting" class="com.meeting.action.AddMRoomAction">
+		<result name="suc">add.html</result>
+	</action>
+	<action name="delete"
+		class="com.meeting.action.DeleteMetingRoomAction">
+		<result name="suc">MeetRoomDel.html</result>
+	</action>
+	<action name="add" class="com.meeting.action.MeetingToDBAction"></action></package>
+	<package name="Department" namespace="/" extends="struts-default">
+		<action name="department" class="com.meeting.action.AddDepartmentAction">
+			<result name="suc">add_department.html</result>
+		</action>
+		<action name="deletep" class="com.meeting.action.DeleteDepartmentAction">
+			<result name="suc">Department--DEL.html</result>
+		</action>
+		<action name="modify"
+			class="com.meeting.action.ModifyDepartmentPerson">
+		</action></package>
+		<package name="Person" namespace="/">
+		<action name="person"
+			class="com.meeting.action.PersonDoAction">
+		</action>
+		</package>
+</struts>    

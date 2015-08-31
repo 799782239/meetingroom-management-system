@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>人员删除</title>
+<meta charset="utf-8">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h3>
+				<strong>审批列表</strong>
+			</h3>
+		</div>
+		<table class="table" id="User">
+			<caption>
+				<h3>所有审批人员资料</h3>
+			</caption>
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>工号</th>
+					<th>部门</th>
+					<th>手机号</th>
+					<th>审批</th>
+				</tr>
+			</thead>
+
+		</table>
+	</div>
+	<script src="scripts/jquery-1.11.0.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		$.post("person!checklist", {
+			'WorkID' : "WorkID"
+		}, function(result) {
+			a = result;
+			var user = eval ("(" + a + ")");
+			console.log(result);
+			console.log(user.length);
+			for (var i = 0; i < user.length; i++) {
+				var newTr = User.insertRow();
+				var newTd0 = newTr.insertCell();
+				var newTd1 = newTr.insertCell();
+				var newTd2 = newTr.insertCell();
+				var newTd3 = newTr.insertCell();
+				var newTd4 = newTr.insertCell();
+				newTd0.innerHTML = user[i].name;
+				newTd1.innerHTML = user[i].workId;
+				newTd2.innerHTML = user[i].department;
+				newTd3.innerHTML = user[i].phone;
+				newTd4.innerHTML =  '<input type="button" onclick="success('+user[i].workId+')"   style="background:url(img/3s.png) no-repeat;width:30px;height:30px;border:0px"><input type="button" onclick="unsuccess('+user[i].workId+')"   style="background:url(img/3x.png) no-repeat;width:30px;height:30px;border:0px">';
+			}
+		});
+		function success(insert){
+			$.post("person!change_t", {
+				'workId' : insert
+			}, function(result) {
+				alert("success!");
+				location.reload([ true ]);
+			});
+		}
+		function unsuccess(insert){
+			$.post("person!change_f", {
+				'workId' : insert
+			}, function(result) {
+				alert("delete!");
+				location.reload([ true ]);
+			});
+			
+		}
+	</script>
+</body>
+</html>

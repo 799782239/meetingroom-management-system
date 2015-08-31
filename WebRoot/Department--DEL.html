@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>基本信息展示首页</title>
+
+</head>
+<body>
+
+	<script src="scripts/jquery-1.11.0.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript">
+		var x = 0;
+		var a;
+		var department = "user";
+
+		$.post("deletep.action", {
+			'department' : department
+		}, function(result) {
+			a = result;
+			var obj = eval ("(" + a + ")");
+			console.log(result);
+			document.write("<!DOCTYPE html>");
+			document.write("<html xmlns='http://www.w3.org/1999/xhtml'>");
+			document.write("<meta http-equiv='Content-Type' content='text/html;charset=utf-8'>");
+			document.write("<head>");
+			document.write("<title>基本信息展示首页</title>");
+			document.write("<link href='bootstrap/css/bootstrap.css' rel='stylesheet' />");
+			document.write("<link href='styles/department_del.css' rel='stylesheet' type='text/css' >");
+			document.write("</head>");
+			document.write("<body>");
+			document.write("<div>");
+			document.write("<h3 class='titlt_style'>");
+			document.write("<strong>部门管理----删除</strong>");
+			document.write("</h3>");
+			document.write("</div>");
+			document.write("<div class='container room'>");
+			for (; x < result.length; x++) {
+				document.write("<div class='text-center col-md-3' style='padding-top: 50px'>");
+				document.write("<div class='in'");
+				document.write("<h2 class='font_style'><strong>"+obj[x].name+"</strong></h2>");
+				document
+						.write("<p class='font_small_style'><strong>部门人数: "+obj[x].numberLimit+"人</strong></p>");
+				document
+						.write("<p class='font_bottom_style'><strong>创立时间: "+obj[x].builddata+"</strong></p>");
+				document.write("<div class='button_style'>");
+				document.write("<form method='post' action='deletep!delete_d' id='form1'>");
+				document.write("<input type='hidden' name='user' value='"+obj[x].name+"'/>");
+				document.write("<input type='submit' value='X' class='button_bottom_style' style='border:0;background:url('img/x.png')'>");
+				document.write("</form>");
+				document.write("</div>");
+				document.write("</div>");
+				document.write("</div>");
+
+			}
+			document.write("</div>");
+		});
+		
+	</script>
+</body>
+</html>

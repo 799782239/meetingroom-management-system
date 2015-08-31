@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>部门添加</title>
+    <link href="styles/add_normal.css" rel="stylesheet"/>
+</head>
+<body>
+<div><h2 style="text-align: left;">部门管理——添加</h2></div>
+<script src="scripts/jquery-1.11.0.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script>
+var flag=false;
+function do_d_check(dname) {
+	var url="department!Derpart_check";
+	$.post(url,{'name':dname},function doD_check(result){
+		if(result=="false"){
+			alert("部门名重复！！！");
+			flag=false;
+		}else{
+			flag=true;
+		}
+	});
+}
+
+function do_m_check(mname) {
+	var url="department!Manager_check";
+	$.post(url,{'D_manager':mname},function doajax(result){
+		if(result=="true"){
+			alert("查无此人!!");
+			flag=false;
+		}else{
+			flag=true;
+		}
+	});
+}
+
+function _up_it() {
+	if(!/^[\d]{1,3}$/.test($("#maxnum").val())){
+		alert("请正确输入最大人数!");
+		return false
+	}else{
+		if(flag){
+			document.form_d.action="department";
+			document.form_d.submit();
+		}
+	}
+}
+
+</script>
+<div style="margin-left: 50px;margin-bottom: 10px"><img src="img/add_department.png"></div>
+<div style="margin-left: 0px;width: 879px">
+<form name="form_d" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>部门名称：<input type="text" style="background:#c0c0c0;border: 0px" id="name" name="name" value="" onblur="do_d_check(this.value)"></th>
+            <th>人数上限：<input type="text" style="background:#c0c0c0;border: 0px" id="maxnum" name="maxnum" value=""></th>
+            <th>部门经理：<input type="text" style="background:#c0c0c0;border: 0px" id="D_manager" name="D_manager" value="" onblur="do_m_check(this.value)"></th>
+        </tr>
+
+        </thead>
+    </table>
+    </form>
+</div>
+<div style="text-align: center;margin-top: 30px;width: 879px"><a style="margin-left: 0px" onclick="_up_it()"><img
+        src="img/add_button.png"></a></div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head>
+<title>会议室预订</title>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<script src="scripts/jquery-1.11.0.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+	<!--预定弹出部分-->
+	<div id="dlg" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">
+						<img src="img/success_icon.png">
+					</h4>
+				</div>
+				<div class="modal-body" style="margin-top: -10px">
+					<div style="margin-left: 50px">
+						<table>
+							<thead>
+								<tr>
+									<td
+										style="background: #c0c0c0;border-right: 10px solid white;padding: 10px;width: 230px">
+										会议主题：<input id="title" type="text"
+										style="background:#c0c0c0;border: 0px">
+									</td>
+									<td
+										style="background: #c0c0c0;border-right: 10px solid white;padding: 10px;width: 230px">
+										主持人：<input id="speaker" type="text"
+										style="background:#c0c0c0;border: 0px">
+									</td>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div style="margin-left: 50px">
+						<table>
+							<thead>
+								<tr>
+									<th
+										style="background: #c0c0c0;border-right: 10px solid white;padding: 10px;width: 230px;border-top: 10px solid white">
+										预计时长：<input id="estimate_time" type="text"
+										style="background:#c0c0c0;border: 0px">
+									</th>
+									<th
+										style="background: #c0c0c0;border-right: 10px solid white;padding: 10px;width: 230px;border-top: 10px solid white">
+										会议等级：<input id="level" type="text"
+										style="background:#c0c0c0;border: 0px">
+									</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div style="margin-left: 50px">
+						<table>
+							<thead>
+								<tr style="text-align: left">
+									<th
+										style="background: #c0c0c0;border-right: 10px solid white;padding-bottom: 200px;border-top: 10px solid white;width: 460px">
+										详细描述：<input id="content" type="text"
+										style="background:#c0c0c0;border: 0px">
+									</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div>
+						<form method="post" name="myform">
+							<table border="0" width="100%">
+								<tr>
+									<td width="10%"></td>
+									<td width="30%" id="layer3">部门选择<select
+										id="selDepartments" onchange="setLeftSelect()"
+										style="background-color: #808080;color: white;width: 80px">
+									</select>
+									</td>
+									<td width="10%"></td>
+									<td width="30%" id="layer3">选择参会人员</td>
+								</tr>
+								<tr></tr>
+								<tr>
+									<td width="10%"></td>
+									<td width="30%"><select
+										style="WIDTH:100%;background-color: #c0c0c0;border: 0px"
+										multiple name="list1" size="12" id="leftSelect"
+										ondblclick="moveOption(document.myform.list1, document.myform.list2)">
+									</select></td>
+									<td width="20%" align="center"><input type="button"
+										class="layer" value=""
+										onclick="moveOption(document.myform.list1, document.myform.list2)"><br />
+										<br /> <input type="button" class="layer2" value=""
+										onclick="moveOption(document.myform.list2, document.myform.list1)">
+									</td>
+									<td width="20%"><select
+										style="WIDTH:100%;background-color: #c0c0c0;border: 0px"
+										multiple name="list2" size="12" id="rightSelect"
+										ondblclick="moveOption(document.myform.list2, document.myform.list1)">
+									</select></td>
+									<td width="20%"></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="text-center">
+						<input type="button" value="确定" onclick="meetingToDB()" data-dismiss="modal">
+
+						<p style="font-size: 10px;font-weight: lighter;color: #c4e3f3">Produced
+							by HDCC Group 2015.6.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--列表部分-->
+	<div class="container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th><h3>会议室预订情况</h3></th>
+					<th></th>
+					<th><img src="img/check.png"></th>
+					<th><img src="img/uncheck.png"></th>
+					<th>日期</th>
+					<th><select id="dateSelect" onchange="UpdateTable()">
+					</select></th>
+				</tr>
+			</thead>
+		</table>
+		<table class="table" id="MeetingTable">
+			<thead>
+				<tr>
+					<th bgcolor="gray"></th>
+					<th bgcolor="gray">9:00-10:00</th>
+					<th bgcolor="gray">10:00-11:00</th>
+					<th bgcolor="gray">11:00-12:00</th>
+					<th bgcolor="gray">12:00-13:00</th>
+					<th bgcolor="gray">13:00-14:00</th>
+					<th bgcolor="gray">14:00-15:00</th>
+					<th bgcolor="gray">15:00-16:00</th>
+					<th bgcolor="gray">16:00-17:00</th>
+				</tr>
+			</thead>
+
+		</table>
+	</div>
+	<script type="text/javascript">
+		var roomList;
+		var meetingList;
+		var chooseroom;
+		var choosetime;
+
+		var Time = new Array("09", "10", "11", "12", "13", "14", "15", "16");
+
+		function meetingToDB() {
+			var title = document.getElementById("title").value;
+			var speaker = document.getElementById("speaker").value;
+			var estimate_time = document.getElementById("estimate_time").value;
+			var level = document.getElementById("level").value;
+			var content = document.getElementById("content").value;
+			var booker = "nibaba";
+			var date = $("#dateSelect option:selected").text();
+			var Time = date + "&" + choosetime;
+			var personlist = "";
+			var rightSelect = document.getElementById("rightSelect");
+			for (var i = 0; i < rightSelect.options.length; i++) {
+				var optiontext = rightSelect.options[i].text;
+				var optiontextArray = optiontext.split(":");
+				if (i == rightSelect.options.length - 1) {
+					personlist = personlist + optiontextArray[1];
+				} else {
+					personlist = personlist + optiontextArray[1] + ";";
+				}
+			}
+			debugger;
+			$.post("add.action", {
+				'title' : title,
+				'speaker' : speaker,
+				'estimate_time' : estimate_time,
+				'level' : level,
+				'content' : content,
+				'booker' : booker,
+				'users' : personlist,
+				'room' : chooseroom,
+				'data' : Time
+			}, function(result) {
+				
+			});
+
+		}
+
+		function showDlg(click) {
+			$("#dlg").modal({
+				'backdrop' : 'static'
+			});
+			var Info = click.split("+");
+			chooseroom = Info[1];
+			choosetime = Info[0];
+
+			setDepartmentSelect();
+		}
+		function closeDlg() {
+			$("#dlg").modal('hide');
+		}
+
+		function setDepartmentSelect() {
+			DepartmentSelect = document.getElementById("selDepartments");
+			$.post("modify!list", {}, function(result) {
+				var DepartmentArray = JSON.parse(result);
+				for (var i = 0; i < DepartmentArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = DepartmentArray[i].name;
+					DepartmentSelect.appendChild(option);
+				}
+				setLeftSelect();
+			});
+		}
+		function setLeftSelect() {
+			var department = $("#selDepartments option:selected").text();
+			leftSelect = document.getElementById("leftSelect");
+			leftSelect.options.length = 0;
+			$.post("modify!userlist.action", {
+				'Department' : department
+			}, function(result) {
+				var leftSelectArray = JSON.parse(result);
+				for (var i = 0; i < leftSelectArray.length; i++) {
+					var option = new Option();
+					option.innerHTML = leftSelectArray[i].name + ":"
+							+ leftSelectArray[i].workId;
+					leftSelect.appendChild(option);
+				}
+			});
+		}
+		function setDateSelect() {
+			var dateSelect = document.getElementById("dateSelect");
+			var date = new Date();
+			var year = date.getYear() + 1900;
+			var month = date.getMonth() + 1;
+			var day = date.getDate() - 1;
+			for (var int = 0; int < 6; int++) {
+				var option = new Option();
+				day = day + 1;
+				if (day > 9) {
+					option.innerHTML = year + "/0" + month + "/" + day;
+				} else {
+					option.innerHTML = year + "/0" + month + "/0" + day;
+				}
+				dateSelect.appendChild(option);
+			}
+			getRoomList();
+		}
+		function getRoomList() {
+			$.post("add!listroom", {}, function(result) {
+				roomList = result;
+				getMeetingList(roomList);
+			});
+
+		}
+
+		function getMeetingList(roomList) {
+			var date = $("#dateSelect option:selected").text();
+			$.post("add!listmeeting", {
+				'Date' : date
+			}, function(result) {
+				meetingList = result;
+				MeetingTableDisplay(roomList, meetingList);
+			});
+		}
+
+		function UpdateTable() {
+			var table = document.getElementById("MeetingTable");
+			var rowNumber = table.rows.length;
+			for (var i = 1; i < rowNumber; i++) {
+				table.deleteRow(i);
+				rowNumber = rowNumber - 1;
+				i = i - 1;
+			}
+			getRoomList();
+		}
+		function MeetingTableDisplay(roomList, meetingList) {
+			var roomArray = JSON.parse(roomList);
+			var meetingArray = JSON.parse(meetingList);
+			console.log(roomArray);
+			console.log(meetingArray);
+			for (var i = 0; i < roomArray.length; i++) {
+				var newTr = MeetingTable.insertRow();
+				var newTd0 = newTr.insertCell();
+				newTd0.innerHTML = '<a style="background="gray"">'
+						+ roomArray[i].name + '</a>';
+				for (var j = 0; j < Time.length; j++) {
+					var newTd = newTr.insertCell();
+					newTd.innerHTML = '<a href="#" name="'+Time[j]+'+'+roomArray[i].name+'" onclick="showDlg(this.name)" class="btn btn-success" style="height: 20px;width: 80px;background: silver;border: 0px">';
+					for (var k = 0; k < meetingArray.length; k++) {
+						if (meetingArray[k].room == roomArray[i].name
+								&& meetingArray[k].time == Time[j]) {
+							newTd.innerHTML = '<a href="#" class="btn btn-danger" style="height: 20px;width: 80px"> </a>';
+							break;
+						}onclick
+					}
+				}
+			}
+		}
+		window.onload = setDateSelect;
+
+		function moveOption(e1, e2) {
+			try {
+				for (var i = 0; i < e1.options.length; i++) {
+					if (e1.options[i].selected) {
+						var e = e1.options[i];
+						e2.options.add(new Option(e.text, e.value));
+						e1.remove(i);
+						ii = i - 1;
+					}
+				}
+				document.myform.city.value = getvalue(document.myform.list2);
+			} catch (e) {
+			}
+		}
+		function getvalue(geto) {
+			var allvalue = "";
+			for (var i = 0; i < geto.options.length; i++) {
+				allvalue += geto.options[i].value + ",";
+			}
+			return allvalue;
+		}
+		function changepos(obj, index) {
+			if (index == -1) {
+				if (obj.selectedIndex > 0) {
+					obj.options(obj.selectedIndex).swapNode(
+							obj.options(obj.selectedIndex - 1))
+				}
+			} else if (index == 1) {
+				if (obj.selectedIndex < obj.options.length - 1) {
+					obj.options(obj.selectedIndex).swapNode(
+							obj.options(obj.selectedIndex + 1))
+				}
+			}
+		}
+	</script>
+</body>
+</html>

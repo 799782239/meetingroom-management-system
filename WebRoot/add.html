@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>会议室添加</title>
+    <link href="styles/add_normal.css" rel="stylesheet"/>
+</head>
+<body>
+<div><h2 style="text-align: left;">会议室管理——添加</h2></div>
+<script src="scripts/jquery-1.11.0.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script>
+var check=false;
+function do_c(){
+	var url="addmeeting.action";
+	var r=$("#room").val();
+	$.get(url,{'room':r},function doajax(result){
+		if(result){
+			alert("房间名重复，请重新输入");
+		}
+		check=result;
+	});
+}
+function add_check(){
+    if($("#room").val()==""){
+        alert("请输入一个预定的房间号！");
+        return false;
+    }else if(!/^[\d]{3,4}$/.test($("#room").val())){
+        alert("请输入正确的房间号!");
+        return false;
+    }else if($("#area").val()==""){
+        alert("请输入人数容量！");
+        return false;
+    }else if(!/^[\d]{2,3}$/.test($("#area").val())){
+    	alert("请输入正确的人数容量(1~999)!");
+    	return false;
+    }
+    else if($("#position").val()=="") {
+        alert("请输入会议室位置！");
+        return false;
+    }else{
+    	if(check){
+			document.form_m.action="addmeeting!set_in";
+			document.form_m.submit();
+    	}
+    }
+}
+</script>
+<div style="margin-left: 50px;margin-bottom: 10px"><img src="img/add.png"></div>
+<div style="margin-left: 50px;width: 879px">
+<form method="post" name="form_m">
+    <table>
+        <thead>
+        <tr>
+            <th>房间号：<input type="text" style="background:#c0c0c0;border: 0px" id="room" name="room" onblur="do_c()"></th>
+            <th>人数容量：<input type="text" style="background:#c0c0c0;border: 0px" id="area" name="area"></th>
+            <th>位置：<input type="text" style="background:#c0c0c0;border: 0px" id="position" name="position"></th>
+        </tr>
+        </thead>
+    </table>
+    </form>
+</div>
+<div style="text-align: center;margin-top: 30px;width: 879px"><a style="margin-left: 80px" onclick="add_check()"><img src="img/add_button.png"></a></div>
+</body>
+</html>

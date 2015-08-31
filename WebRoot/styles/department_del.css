@@ -1,0 +1,49 @@
+
+body {
+	padding-top: 50px;
+}
+
+div.in {
+	background: url("img/deepbg.png") no-repeat;
+	width: 200px;
+	height: 190px;
+}
+
+div.Room {
+	width: 50px;
+	height: 30px;
+}
+
+h3.font_style {
+	padding-top: 15px;
+}
+
+h3.titlt_style {
+	padding-left: 125px;
+	font-size: 20px;
+}
+
+p.font_small_style {
+	text-align: left;
+	padding-left: 10px;
+	padding-top: 10px;
+	font-size: 15px;
+}
+
+p.font_bottom_style {
+	text-align: left;
+	padding-left: 10px;
+	padding-top: 15px;
+	font-size: 15px;
+}
+
+div.button_style {
+	text-align: right;
+	padding-top: 30px;
+	padding-right: 8px;
+}
+
+img.button_bottom_style {
+	width: 20px;
+	height: 20px;
+}

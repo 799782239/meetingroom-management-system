@@ -1,0 +1,37 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th {
+    padding: 10px;
+    font-weight: bold;
+    border-right: 20px solid white;
+    font-family: Î¢ÈíÑÅºÚ, Arial;
+    color: black;
+    text-align: left;
+    background-color: #c0c0c0;
+}
+
+table td {
+    padding: 10px;
+
+    background-color: #c0c0c0;
+}
+
+a {
+    color: darkgray;
+    text-decoration: none;
+}
+
+a:visited {
+    color: darkgray;
+}
+
+a:hover {
+    color: red;
+}
+
+table tr td:last-child {
+    text-align: center;
+}

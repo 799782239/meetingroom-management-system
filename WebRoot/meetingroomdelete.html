@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>会议室预定</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        #header_example{
+            background-color: #454e4d;
+            left:0px;
+            position: fixed;
+            top:10px;
+            width: 100%;
+            height: 59px;
+            z-index: 1000;
+        }
+        #left_menu{
+            background-color: white;
+            top: 100px;
+            width: 20%;
+            height: 100%;
+            position: absolute;
+        }
+        div.father{
+            background-image: url(img/left_lable.jpg);
+            height: 50px;
+            width: 193px;
+            text-align:center;
+            line-height: 50px;
+        }
+        div.main{
+            background-color: white;
+            top:100px;
+            left: 20%;
+            width: 80%;
+            height: 100%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="header_example"><img src="img/KV.jpg" width="260" height="60"/></div>
+<div id="left_menu">
+    <div class="container">
+        <!-- 左侧可伸缩菜单栏开始 -->
+        <div class="col-md-3" >
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" >
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#">
+                                <div class="father"><a href="MeetingRoomReservation.html" style="color:#080808;">会议室预定</a></div>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel panel-default" >
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#panel1">
+                                <div class="father">会议室管理</div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="panel1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin:0">
+                                <a class="list-group-item" href="addmeetingroom.html">
+                                    会议室添加
+                                </a>
+                                <a class="list-group-item" href="meetingroomdelete.html">
+                                    会议室删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#panel2">
+                                <div class="father">部门管理</div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="panel2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin:0">
+                                <a class="list-group-item" href="adddepartment.html">
+                                    部门添加
+                                </a>
+                                <a class="list-group-item" href="deletedepartment.html">
+                                    部门删除
+                                </a>
+                                <a class="list-group-item" href="DepartmentPersonChange.html">
+                                    部门人员修改
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#panel3">
+                                <div class="father">人员管理</div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="panel3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin:0">
+                                <a class="list-group-item" href="personchangestatu.html">
+                                    人员审批
+                                </a>
+                                <a class="list-group-item" href="persondelete.html">
+                                    人员删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#panel4">
+                                <div class="father">个人信息</div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="panel4" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="list-group" style="margin:0">
+                                <a class="list-group-item" href="personalinform.html">
+                                    我的资料
+                                </a>
+                                <a class="list-group-item" href="NoticeOfMeeting.html">
+                                    我的会议
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <iframe src="MeetRoomDel.html" width="100%" height="100%" frameborder="0"></iframe>
+</div>
+<script src="scripts/jquery-1.11.0.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+</body>
+</html>
